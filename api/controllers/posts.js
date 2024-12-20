@@ -15,8 +15,8 @@ export const getPosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
   try {
-    const { title, content, userId } = req.body;
-    if (!title || !content || !userId)
+    const { title, content, author } = req.body;
+    if (!title || !content || !author)
       return res.status(400).json({ error: "Missing fields" });
     const post = await Post.create(req.body);
     res.json(post);
@@ -39,10 +39,10 @@ export const getPostById = async (req, res) => {
 export const updatePost = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, content, userId } = req.body;
+    const { title, content, author } = req.body;
     const post = await Post.findByPk(id);
     if (!post) return res.status(404).json({ error: "Post not found" });
-    await post.update({ title, content, userId });
+    await post.update({ title, content, author });
     res.json(post);
   } catch (error) {
     res.status(500).json({ error: error.message });
